@@ -10,7 +10,7 @@ from routers.users import user_router
 from routers.wish_list import wish_list_router
 from utils.slowapi_configuration import limiter
 
-app = FastAPI(docs_url='/')
+app = FastAPI(docs_url='/', title='StreamVibe API', description='StreamVibe API', version='1.0.0')
 
 
 Base.metadata.create_all(bind=engine)
