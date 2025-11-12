@@ -39,26 +39,25 @@ def get_actors(db: Session = Depends(database)):
 
 
 @film_actor_router.put("/update")
-def update_actor(film_id: int, actor_id: int, db: Session = Depends(database),
+def update_actor(id: int, film_id: int, actor_id: int, db: Session = Depends(database),
               current_user: Users = Depends(get_current_user)):
     if current_user.role != "admin":
         raise HTTPException(403, "You are not authorized to update an actor")
-    film_actor = db.query(FilmActor).filter(FilmActor.film_id == film_id, FilmActor.actor_id == actor_id).first()
-    if not film_actor:
-        raise HTTPException(404, "Film actor topilmadi")
-    film_actor.film_id = film_id
-    film_actor.actor_id = actor_id
+    db.query(FilmActor ).filter(FilmActor.id == id).update(
+        {
+            FilmActor.film_id: film_id,
+            FilmActor.actor_id: actor_id
+        }
+    )
     db.commit()
     raise HTTPException(200, "Actor updated successfully!!!")
 
+
 @film_actor_router.delete("/delete")
-def delete_actor(film_id: int, actor_id: int, db: Session = Depends(database),
+def delete_actor(id: int, db: Session = Depends(database),
               current_user: Users = Depends(get_current_user)):
     if current_user.role != "admin":
         raise HTTPException(403, "You are not authorized to delete an actor")
-    film_actor = db.query(FilmActor).filter(FilmActor.film_id == film_id, FilmActor.actor_id == actor_id).first()
-    if not film_actor:
-        raise HTTPException(404, "Film actor topilmadi")
-    db.delete(film_actor)
+    db.query(FilmActor).filter(FilmActor.id == id).delete()
     db.commit()
     raise HTTPException(200, "Actor deleted successfully!!!")
