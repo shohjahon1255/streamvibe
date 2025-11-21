@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from database import Base, engine
+from routers.comment import comment_router
 from routers.crew import crew_router
 from routers.film_actor import film_actor_router
 from routers.films import film_router
@@ -24,7 +25,7 @@ app.include_router(film_router, tags=['Films'], prefix='/films')
 app.include_router(wish_list_router, tags=['Wish List'], prefix='/wish_list')
 app.include_router(crew_router, tags=['Crew'], prefix='/crew')
 app.include_router(film_actor_router, tags=['Film Actor'], prefix='/film_actor')
-
+app.include_router(comment_router, tags=['Comment'], prefix='/comment')
 
 app.add_middleware(
     CORSMiddleware,
